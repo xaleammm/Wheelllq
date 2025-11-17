@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Колесо выбора</title>
+<style>
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #f2f2f2;
+}
+
+#wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+#wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid #0088cc;
+    background: conic-gradient(#0088cc 0% 50%, #ff3333 50% 100%);
+    transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+#pointer {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; 
+    height: 0; 
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid #000;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #0088cc;
+    color: #fff;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 50px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h2>Крутить колесо</h2>
+
+<div id="wheel-container">
+    <div id="wheel"></div>
+    <div id="pointer"></div>
+</div>
+
+<button onclick="spin()">Крутить</button>
+
+<div id="result"></div>
+
+<script>
+let spinning = false;
+
+function spin() {
+    if (spinning) return; // запретить новое вращение пока идет вращение
+    spinning = true;
+
+    const wheel = document.getElementById('wheel');
+    const resultDiv = document.getElementById('result');
+
+    // случайное вращение от 3 до 6 оборотов
+    const spins = Math.floor(Math.random() * 3 + 3); 
+    // добавим рандомный угол для 50/50
+    const extraDeg = Math.random() < 0.5 ? 0 : 180; 
+    const totalDeg = spins * 360 + extraDeg;
+
+    wheel.style.transform = `rotate(${totalDeg}deg)`;
+
+    setTimeout(() => {
+        // определяем результат по extraDeg
+        const result = extraDeg === 0 ? "ДА" : "НЕТ";
+        resultDiv.textContent = result;
+        spinning = false;
+    }, 4000); // совпадает с transition
+}
+</script>
+
+</body>
+</html>
